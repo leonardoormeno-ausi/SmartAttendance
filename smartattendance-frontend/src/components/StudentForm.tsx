@@ -2,7 +2,11 @@ import { useState } from 'react'
 
 import { studentService } from '../services/studentService'
 
-function StudentForm() {
+type StudentFormProps = {
+  onStudentCreated: () => void
+}
+
+function StudentForm({ onStudentCreated }: StudentFormProps) {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [course, setCourse] = useState('')
@@ -26,6 +30,8 @@ function StudentForm() {
       setLastName('')
       setCourse('')
       setEmail('')
+
+      onStudentCreated()
     } catch (error) {
       console.error(error)
 

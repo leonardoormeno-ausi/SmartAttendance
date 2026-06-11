@@ -38,7 +38,14 @@ function StudentsPage() {
         </button>
       </div>
 
-      {showForm && <StudentForm />}
+      {showForm && (
+        <StudentForm
+           onStudentCreated={async () => {
+            await loadStudents()
+            setShowForm(false)
+          }}
+        />
+      )}
 
       <p className="mb-4 text-slate-600">
         Total: {students.length} alumnos
