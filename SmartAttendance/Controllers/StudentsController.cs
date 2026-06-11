@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SmartAttendance.Models;
 using SmartAttendance.Services;
 
 namespace SmartAttendance.Controllers;
@@ -18,5 +19,13 @@ public class StudentsController : ControllerBase
     public IActionResult GetAll()
     {
         return Ok(_studentService.GetAll());
+    }
+
+    [HttpPost]
+    public IActionResult Create(Student student)
+    {
+        var createdStudent = _studentService.Create(student);
+
+        return Ok(createdStudent);
     }
 }

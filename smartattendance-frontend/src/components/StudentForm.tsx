@@ -1,29 +1,36 @@
 import { useState } from 'react'
 
+import { studentService } from '../services/studentService'
+
 function StudentForm() {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [course, setCourse] = useState('')
   const [email, setEmail] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const newStudent = {
-      firstName,
-      lastName,
-      course,
-      email,
+    try {
+      await studentService.createStudent({
+        firstName,
+        lastName,
+        course,
+        email,
+        isActive: true,
+      })
+
+      alert('Alumno creado correctamente')
+
+      setFirstName('')
+      setLastName('')
+      setCourse('')
+      setEmail('')
+    } catch (error) {
+      console.error(error)
+
+      alert('Error al crear alumno')
     }
-
-    console.log('Nuevo alumno:', newStudent)
-
-    alert('Alumno creado (solo frontend)')
-
-    setFirstName('')
-    setLastName('')
-    setCourse('')
-    setEmail('')
   }
 
   return (

@@ -7,4 +7,13 @@ export const studentService = {
 
     return response.data
   },
+
+  async createStudent(student: Omit<Student, 'id'>): Promise<Student> {
+    const response = await api.post<Student>(
+      '/api/students',
+      student
+    )
+
+    return response.data
+  },
 }

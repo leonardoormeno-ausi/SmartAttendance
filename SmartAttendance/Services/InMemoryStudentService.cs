@@ -38,7 +38,16 @@ public class InMemoryStudentService : IStudentService
     ];
 
     public IEnumerable<Student> GetAll()
-    {
-        return _students;
-    }
+{
+    return _students;
+}
+
+public Student Create(Student student)
+{
+    student.Id = _students.Max(s => s.Id) + 1;
+
+    _students.Add(student);
+
+    return student;
+}
 }

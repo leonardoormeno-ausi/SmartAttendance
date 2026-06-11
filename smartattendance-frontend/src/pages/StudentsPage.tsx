@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import StudentsTable from '../components/StudentsTable'
+import StudentForm from '../components/StudentForm'
+
 import { studentService } from '../services/studentService'
 import type { Student } from '../types/Student'
 
 function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([])
-  const navigate = useNavigate()
+  const [showForm, setShowForm] = useState(false)
 
   useEffect(() => {
     loadStudents()
@@ -31,11 +32,13 @@ function StudentsPage() {
 
         <button
           className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-700"
-          onClick={() => navigate('/students/new')}
+          onClick={() => setShowForm(!showForm)}
         >
           Nuevo Alumno
         </button>
       </div>
+
+      {showForm && <StudentForm />}
 
       <p className="mb-4 text-slate-600">
         Total: {students.length} alumnos
