@@ -17,6 +17,18 @@ export const studentService = {
     return response.data
   },
 
+  async updateStudent(
+    id: number,
+    student: Omit<Student, 'id'>
+  ): Promise<Student> {
+    const response = await api.put<Student>(
+      `/api/students/${id}`,
+      student
+    )
+
+    return response.data
+  },
+
   async deleteStudent(id: number): Promise<void> {
     await api.delete(`/api/students/${id}`)
   },

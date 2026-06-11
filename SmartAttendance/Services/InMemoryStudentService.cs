@@ -64,4 +64,23 @@ public bool Delete(int id)
 
     return true;
 }
+
+public Student? Update(int id, Student student)
+{
+    var existingStudent =
+        _students.FirstOrDefault(s => s.Id == id);
+
+    if (existingStudent == null)
+    {
+        return null;
+    }
+
+    existingStudent.FirstName = student.FirstName;
+    existingStudent.LastName = student.LastName;
+    existingStudent.Course = student.Course;
+    existingStudent.Email = student.Email;
+    existingStudent.IsActive = student.IsActive;
+
+    return existingStudent;
+}
 }

@@ -8,5 +8,7 @@ public interface IStudentService
 
     Student Create(Student student);
 
+    Student? Update(int id, Student student);
+
     bool Delete(int id);
 }

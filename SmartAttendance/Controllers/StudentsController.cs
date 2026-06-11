@@ -30,6 +30,21 @@ public class StudentsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    
+    [HttpPut("{id}")]
+public IActionResult Update(int id, Student student)
+{
+    var updatedStudent =
+        _studentService.Update(id, student);
+
+    if (updatedStudent == null)
+    {
+        return NotFound();
+    }
+
+    return Ok(updatedStudent);
+}
+    
     public IActionResult Delete(int id)
     {
         var deleted = _studentService.Delete(id);
