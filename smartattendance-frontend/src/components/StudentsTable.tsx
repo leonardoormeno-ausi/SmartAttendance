@@ -2,9 +2,13 @@ import type { Student } from '../types/Student'
 
 type StudentsTableProps = {
   students: Student[]
+  onDelete: (id: number) => void
 }
 
-function StudentsTable({ students }: StudentsTableProps) {
+function StudentsTable({
+  students,
+  onDelete,
+}: StudentsTableProps) {
   return (
     <div className="bg-white rounded-xl shadow overflow-hidden">
       <table className="w-full">
@@ -16,6 +20,7 @@ function StudentsTable({ students }: StudentsTableProps) {
             <th className="p-3 text-left">Curso</th>
             <th className="p-3 text-left">Email</th>
             <th className="p-3 text-left">Activo</th>
+            <th className="p-3 text-left">Acciones</th>
           </tr>
         </thead>
 
@@ -32,6 +37,15 @@ function StudentsTable({ students }: StudentsTableProps) {
               <td className="p-3">{student.email}</td>
               <td className="p-3">
                 {student.isActive ? 'Sí' : 'No'}
+              </td>
+
+              <td className="p-3">
+                <button
+                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                  onClick={() => onDelete(student.id)}
+                >
+                  Eliminar
+                </button>
               </td>
             </tr>
           ))}

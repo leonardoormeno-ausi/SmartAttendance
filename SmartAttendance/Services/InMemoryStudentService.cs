@@ -50,4 +50,18 @@ public Student Create(Student student)
 
     return student;
 }
+
+public bool Delete(int id)
+{
+    var student = _students.FirstOrDefault(s => s.Id == id);
+
+    if (student == null)
+    {
+        return false;
+    }
+
+    _students.Remove(student);
+
+    return true;
+}
 }

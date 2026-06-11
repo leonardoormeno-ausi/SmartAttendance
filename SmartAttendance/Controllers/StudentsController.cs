@@ -28,4 +28,17 @@ public class StudentsController : ControllerBase
 
         return Ok(createdStudent);
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var deleted = _studentService.Delete(id);
+
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }

@@ -16,4 +16,8 @@ export const studentService = {
 
     return response.data
   },
+
+  async deleteStudent(id: number): Promise<void> {
+    await api.delete(`/api/students/${id}`)
+  },
 }

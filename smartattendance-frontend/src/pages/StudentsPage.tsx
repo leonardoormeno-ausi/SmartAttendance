@@ -23,6 +23,26 @@ function StudentsPage() {
     }
   }
 
+  const handleDelete = async (id: number) => {
+    const confirmed = window.confirm(
+      '¿Desea eliminar este alumno?'
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    try {
+      await studentService.deleteStudent(id)
+
+      await loadStudents()
+    } catch (error) {
+      console.error(error)
+
+      alert('Error al eliminar alumno')
+    }
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -40,7 +60,7 @@ function StudentsPage() {
 
       {showForm && (
         <StudentForm
-           onStudentCreated={async () => {
+          onStudentCreated={async () => {
             await loadStudents()
             setShowForm(false)
           }}
@@ -51,7 +71,10 @@ function StudentsPage() {
         Total: {students.length} alumnos
       </p>
 
-      <StudentsTable students={students} />
+      <StudentsTable
+        students={students}
+        onDelete={handleDelete}
+      />
     </div>
   )
 }
