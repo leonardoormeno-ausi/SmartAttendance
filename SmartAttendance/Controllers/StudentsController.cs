@@ -29,22 +29,21 @@ public class StudentsController : ControllerBase
         return Ok(createdStudent);
     }
 
-    [HttpDelete("{id}")]
-    
     [HttpPut("{id}")]
-public IActionResult Update(int id, Student student)
-{
-    var updatedStudent =
-        _studentService.Update(id, student);
-
-    if (updatedStudent == null)
+    public IActionResult Update(int id, Student student)
     {
-        return NotFound();
+        var updatedStudent =
+            _studentService.Update(id, student);
+
+        if (updatedStudent == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(updatedStudent);
     }
 
-    return Ok(updatedStudent);
-}
-    
+    [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
         var deleted = _studentService.Delete(id);
