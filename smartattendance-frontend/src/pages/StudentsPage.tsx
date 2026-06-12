@@ -9,6 +9,8 @@ import type { Student } from '../types/Student'
 function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([])
   const [showForm, setShowForm] = useState(false)
+  const [editingStudent, setEditingStudent] =
+  useState<Student | null>(null)
 
   useEffect(() => {
     loadStudents()
@@ -27,6 +29,7 @@ function StudentsPage() {
     const confirmed = window.confirm(
       '¿Desea eliminar este alumno?'
     )
+    
 
     if (!confirmed) {
       return
@@ -42,7 +45,10 @@ function StudentsPage() {
       alert('Error al eliminar alumno')
     }
   }
-
+  const handleEdit = (student: Student) => {
+  setEditingStudent(student)
+  setShowForm(true)
+  }
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -52,29 +58,36 @@ function StudentsPage() {
 
         <button
           className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-700"
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+  setEditingStudent(null)
+  setShowForm(!showForm)
+}}
         >
           Nuevo Alumno
         </button>
       </div>
 
       {showForm && (
-        <StudentForm
-          onStudentCreated={async () => {
-            await loadStudents()
-            setShowForm(false)
-          }}
-        />
-      )}
+  <StudentForm
+    student={editingStudent ?? undefined}
+    onStudentCreated={async () => {
+      await loadStudents()
+
+      setEditingStudent(null)
+      setShowForm(false)
+    }}
+  />
+)}
 
       <p className="mb-4 text-slate-600">
         Total: {students.length} alumnos
       </p>
 
       <StudentsTable
-        students={students}
-        onDelete={handleDelete}
-      />
+  students={students}
+  onDelete={handleDelete}
+  onEdit={handleEdit}
+/>
     </div>
   )
 }

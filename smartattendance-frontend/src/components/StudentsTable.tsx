@@ -3,11 +3,13 @@ import type { Student } from '../types/Student'
 type StudentsTableProps = {
   students: Student[]
   onDelete: (id: number) => void
+  onEdit: (student: Student) => void
 }
 
 function StudentsTable({
   students,
   onDelete,
+  onEdit,
 }: StudentsTableProps) {
   return (
     <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -39,12 +41,19 @@ function StudentsTable({
                 {student.isActive ? 'Sí' : 'No'}
               </td>
 
-              <td className="p-3">
-                <button
-                  className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                  onClick={() => onDelete(student.id)}
+              <td className="p-3 flex gap-2">
+              < button
+               className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                  onClick={() => onEdit(student)}
                 >
-                  Eliminar
+               Editar
+              </button>
+
+              <button
+                className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                onClick={() => onDelete(student.id)}
+              >
+                Eliminar
                 </button>
               </td>
             </tr>

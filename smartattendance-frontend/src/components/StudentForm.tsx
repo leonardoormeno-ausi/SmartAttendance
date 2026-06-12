@@ -2,29 +2,56 @@ import { useState } from 'react'
 
 import { studentService } from '../services/studentService'
 
+import type { Student } from '../types/Student'
+
 type StudentFormProps = {
   onStudentCreated: () => void
+  student?: Student
 }
 
-function StudentForm({ onStudentCreated }: StudentFormProps) {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [course, setCourse] = useState('')
-  const [email, setEmail] = useState('')
+function StudentForm({
+  onStudentCreated,
+  student,
+}: StudentFormProps) {
+  const [firstName, setFirstName] =
+  useState(student?.firstName ?? '')
+
+const [lastName, setLastName] =
+  useState(student?.lastName ?? '')
+
+const [course, setCourse] =
+  useState(student?.course ?? '')
+
+const [email, setEmail] =
+  useState(student?.email ?? '')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     try {
-      await studentService.createStudent({
-        firstName,
-        lastName,
-        course,
-        email,
-        isActive: true,
-      })
+      if (student) {
+  await studentService.updateStudent(student.id, {
+    firstName,
+    lastName,
+    course,
+    email,
+    isActive: student.isActive,
+  })
+} else {
+  await studentService.createStudent({
+    firstName,
+    lastName,
+    course,
+    email,
+    isActive: true,
+  })
+}
 
-      alert('Alumno creado correctamente')
+      alert(
+  student
+    ? 'Alumno actualizado correctamente'
+    : 'Alumno creado correctamente'
+)
 
       setFirstName('')
       setLastName('')
