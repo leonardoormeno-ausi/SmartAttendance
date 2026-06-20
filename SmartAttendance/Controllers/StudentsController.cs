@@ -20,14 +20,39 @@ public class StudentsController : ControllerBase
     {
         return Ok(_studentService.GetAll());
     }
+    [HttpGet("{id}")]
+public IActionResult GetById(int id)
+{
+    var student = _studentService.GetById(id);
 
-    [HttpPost]
-    public IActionResult Create(Student student)
+    if (student == null)
     {
-        var createdStudent = _studentService.Create(student);
-
-        return Ok(createdStudent);
+        return NotFound();
     }
+
+    return Ok(student);
+}
+
+   [HttpPost]
+public IActionResult Create(Student student)
+{
+    if (
+        string.IsNullOrWhiteSpace(student.FirstName) ||
+        string.IsNullOrWhiteSpace(student.LastName) ||
+        string.IsNullOrWhiteSpace(student.Email)
+    )
+    {
+        return BadRequest("Nombre, apellido y email son obligatorios.");
+    }
+
+    var createdStudent = _studentService.Create(student);
+
+    return CreatedAtAction(
+        nameof(GetById),
+        new { id = createdStudent.Id },
+        createdStudent
+    );
+}
 
     [HttpPut("{id}")]
     public IActionResult Update(int id, Student student)

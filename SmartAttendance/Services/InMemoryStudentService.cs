@@ -41,6 +41,10 @@ public class InMemoryStudentService : IStudentService
 {
     return _students;
 }
+public Student? GetById(int id)
+{
+    return _students.FirstOrDefault(s => s.Id == id);
+}
 
 public Student Create(Student student)
 {
