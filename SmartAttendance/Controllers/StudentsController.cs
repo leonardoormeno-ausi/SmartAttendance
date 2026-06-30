@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartAttendance.Models;
 using SmartAttendance.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartAttendance.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/students")]
 public class StudentsController : ControllerBase
@@ -15,50 +17,54 @@ public class StudentsController : ControllerBase
         _studentService = studentService;
     }
 
+    [Authorize(Roles = "admin,seller")]
     [HttpGet]
     public IActionResult GetAll()
     {
         return Ok(_studentService.GetAll());
     }
+
+    [Authorize(Roles = "admin,seller")]
     [HttpGet("{id}")]
-public IActionResult GetById(int id)
-{
-    var student = _studentService.GetById(id);
-
-    if (student == null)
+    public IActionResult GetById(int id)
     {
-        return NotFound();
+        var student = _studentService.GetById(id);
+
+        if (student == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(student);
     }
 
-    return Ok(student);
-}
-
-   [HttpPost]
-public IActionResult Create(Student student)
-{
-    if (
-        string.IsNullOrWhiteSpace(student.FirstName) ||
-        string.IsNullOrWhiteSpace(student.LastName) ||
-        string.IsNullOrWhiteSpace(student.Email)
-    )
+    [Authorize(Roles = "admin")]
+    [HttpPost]
+    public IActionResult Create(Student student)
     {
-        return BadRequest("Nombre, apellido y email son obligatorios.");
+        if (
+            string.IsNullOrWhiteSpace(student.FirstName) ||
+            string.IsNullOrWhiteSpace(student.LastName) ||
+            string.IsNullOrWhiteSpace(student.Email)
+        )
+        {
+            return BadRequest("Nombre, apellido y email son obligatorios.");
+        }
+
+        var createdStudent = _studentService.Create(student);
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = createdStudent.Id },
+            createdStudent
+        );
     }
 
-    var createdStudent = _studentService.Create(student);
-
-    return CreatedAtAction(
-        nameof(GetById),
-        new { id = createdStudent.Id },
-        createdStudent
-    );
-}
-
+    [Authorize(Roles = "admin")]
     [HttpPut("{id}")]
     public IActionResult Update(int id, Student student)
     {
-        var updatedStudent =
-            _studentService.Update(id, student);
+        var updatedStudent = _studentService.Update(id, student);
 
         if (updatedStudent == null)
         {
@@ -68,6 +74,7 @@ public IActionResult Create(Student student)
         return Ok(updatedStudent);
     }
 
+    [Authorize(Roles = "admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

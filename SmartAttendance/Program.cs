@@ -27,7 +27,7 @@ builder.Services
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
-                            "CLAVE_SUPER_SECRETA_TP10"))
+                            "CLAVE_SUPER_SECRETA_TP10_2026_SMARTATTENDANCE"))
             };
     });
 
