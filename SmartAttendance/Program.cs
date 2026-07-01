@@ -8,8 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 
-// OpenAPI / Swagger
-builder.Services.AddOpenApi();
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Dependency Injection
 builder.Services.AddSingleton<IStudentService, InMemoryStudentService>();
@@ -47,10 +48,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// OpenAPI
+// Swagger
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

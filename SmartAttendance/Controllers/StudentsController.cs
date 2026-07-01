@@ -7,7 +7,7 @@ namespace SmartAttendance.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/students")]
+[Route("api/[controller]")]
 public class StudentsController : ControllerBase
 {
     private readonly IStudentService _studentService;
